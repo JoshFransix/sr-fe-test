@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <!-- <h3>Josh</h3> -->
-        <task-list />
-    </div>
+  <div>
+    <task-list />
+  </div>
 </template>

@@ -30,8 +30,11 @@ body {
     border-left-width: 4px;
   }
 }
-.text-extra-small {
+.text-small {
   font-size: 10px;
+}
+.text-extra-small {
+  font-size: 8px;
 }
 
 .light-green {
@@ -49,4 +52,8 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+}
+
+.modal-color {
+  background: #34356e;
 }
