@@ -28,6 +28,36 @@
         </div>
       </div>
     </v-dialog>
+    <!-- Edit Dialog -->
+    <v-dialog persistent v-model="editDialog" scrollable>
+      <div class="rounded-xl text-white modal-color mx-auto py-12 px-6">
+        <h1 class="fw-semibold text-center fs-4">Edit Task</h1>
+        <div>
+          <v-form @submit.prevent="continueEdit">
+            <v-text-field
+              v-model="title"
+              class="mb-4"
+              label="Task title"
+              hide-details
+              required
+            ></v-text-field>
+            <v-textarea v-model="description" label="Description"></v-textarea>
+            <div class="d-flex justify-content-center align-items-center">
+              <v-btn :loading="isLoading" color="primary" type="submit">
+                Update Task
+              </v-btn>
+              <v-btn
+                class="ml-3"
+                color="primaryLight"
+                @click="editDialog = false"
+                depressed
+                >Cancel</v-btn
+              >
+            </div>
+          </v-form>
+        </div>
+      </div>
+    </v-dialog>
     <div class="text-center" v-if="allTasks.length < 1">
       <img
         src="@/assets/images/no-task.svg"
@@ -44,7 +74,10 @@
       </div>
       <div class="grid">
         <div v-for="(item, i) in allTasks" :key="i">
-          <div class="task-box px-3 py-6 transition-element position-relative">
+          <div
+            role="button"
+            class="task-box px-3 py-6 transition-element position-relative"
+          >
             <span class="bg-red rounded-pill text-small px-2 py-1 opacity-50">{{
               item?.date
             }}</span>
@@ -80,9 +113,23 @@
             <div
               class="position-absolute top-0 end-0 d-flex justify-content-center align-items-center"
             >
+              <v-tooltip text="View task">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    @click="$router.push(`/task/${i + 1}`)"
+                    v-bind="props"
+                    class="ma-2"
+                    color="blue-lighten-2"
+                    icon="mdi-eye-circle-outline"
+                    size="small"
+                    variant="text"
+                  ></v-btn>
+                </template>
+              </v-tooltip>
               <v-tooltip text="Edit task">
                 <template v-slot:activator="{ props }">
                   <v-btn
+                    @click="goToEdit(item, i)"
                     v-bind="props"
                     class="ma-2"
                     color="blue-lighten-2"
@@ -119,62 +166,69 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useTasks } from "@/store/tasks";
 import { storeToRefs } from "pinia";
 
-const { allTasks, toggleTask } = useTasks();
+interface Item {
+  title: string;
+  description: string;
+  date: string;
+  completed: boolean;
+}
 
+const { allTasks, toggleTask, editTask, removeTask } = useTasks();
+
+const editDialog = ref(false);
 const deleteDialog = ref(false);
 const selectedDelete = ref(null);
+
+const title = ref("");
+const description = ref("");
 const isLoading = ref(false);
+const selectedTask = ref({});
 
-onMounted(() => {
-  console.log(allTasks);
-});
-
-const updateStatus = (index) => {
+const updateStatus = (index: Number) => {
   console.log(index);
   toggleTask(index);
 };
 
-const openDelete = (index) => {
+const openDelete = (index: Number) => {
   selectedDelete.value = index;
   console.log(selectedDelete.value);
   deleteDialog.value = true;
 };
 
+const goToEdit = (item: Item, index: Number) => {
+  selectedTask.value = { ...item, id: index };
+  title.value = item.title;
+  description.value = item.description;
+  editDialog.value = true;
+};
+
+const continueEdit = () => {
+  isLoading.value = true;
+  const data: Item = {
+    title: title.value,
+    description: description.value,
+    date: new Date().toDateString(),
+    completed: selectedTask.completed,
+  };
+  setTimeout(() => {
+    isLoading.value = false;
+    editTask(selectedTask.id, data);
+    editDialog.value = false;
+  }, 2000);
+};
+
 const loadDelete = () => {
   isLoading.value = true;
   console.log(selectedDelete.value);
-  // setTimeout(() => {
-  //   toggleTask(selectedDelete.value);
-  //   deleteDialog.value = false;
-  //   isLoading.value = false;
-  //   console.log(allTasks);
-  // }, 1000);
-};
 
-// const allTasks = ref([
-//   {
-//     title: "Josh Fransix",
-//     description: "Let get this stack!!",
-//     completed: true,
-//   },
-//   {
-//     title: "Spiikey",
-//     description: "Get cheese real quick!!",
-//     completed: false,
-//   },
-//   {
-//     title: "Josh Fransix",
-//     description: "Let get this stack!!",
-//     completed: true,
-//   },
-//   {
-//     title: "David Beckham",
-//     description: "jdvddfhdfhdf",
-//     completed: false,
-//   },
-// ]);
+  setTimeout(() => {
+    removeTask(selectedDelete.value);
+    deleteDialog.value = false;
+    isLoading.value = false;
+  }, 1000);
+};
 </script>

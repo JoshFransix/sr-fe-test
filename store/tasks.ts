@@ -1,33 +1,38 @@
 import { defineStore } from "pinia";
 
+interface Item {
+  title: string;
+  description: string;
+  date: string;
+  completed: boolean;
+}
 export const useTasks = defineStore("taskStore", () => {
   const allTasks: Array = ref([
     {
       title: "Josh Fransix",
-      description: "Let get this stack!!",
+      description: "This is my first task",
       completed: true,
       date: "Tue Jun 18 2024",
     },
     {
       title: "Spiikey",
-      description: "Get cheese real quick!!",
+      description: "Get cheese from the store",
       completed: false,
-      date: "Tue Jun 18 2024",
+      date: "Mon Jun 17 2024",
     },
     {
-      title: "Josh Fransix",
-      description: "Let get this stack!!",
+      title: "S.R FE",
+      description: "Check my schedule",
       completed: true,
       date: "Tue Jun 18 2024",
     },
     {
-      title: "David Beckham",
-      description: "jdvddfhdfhdf",
+      title: "Test",
+      description: "This is another task",
       completed: false,
       date: "Tue Jun 18 2024",
     },
   ]);
-
   function addTask(value: Object) {
     allTasks.value.push(value);
   }
@@ -40,5 +45,11 @@ export const useTasks = defineStore("taskStore", () => {
   function editTask(index: number, value: Object) {
     allTasks.value[index] = value;
   }
-  return { allTasks, addTask, removeTask, toggleTask, editTask };
+  return {
+    allTasks,
+    addTask,
+    removeTask,
+    toggleTask,
+    editTask,
+  };
 });

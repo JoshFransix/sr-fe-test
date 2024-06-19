@@ -23,7 +23,6 @@
 
 <script setup>
 import { useTasks } from "@/store/tasks";
-import { storeToRefs } from "pinia";
 
 const { addTask } = useTasks();
 const router = useRouter();
