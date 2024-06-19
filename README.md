@@ -3,7 +3,8 @@
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## General Information
-SR-F.E Test
+SR-F.E Test is a task managing platform that helps you keeo track of any important task you'd like to carry out at any point. You can create, edit and delete tasks from your list.
+
 
 ## How To Use
 
