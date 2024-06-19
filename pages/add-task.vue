@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-50 p-3">
+  <div class="mx-auto w-sm-50 w-100 p-4">
     <h4 class="text-center fw-semibold">Add New Task</h4>
     <div>
       <v-form @submit.prevent="addNewTask">

@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-50 p-0">
+  <div class="mx-auto w-sm-50 w-100 p-4">
     <!-- Confirm Delete Dialog -->
     <v-dialog persistent v-model="deleteDialog" max-width="500px" scrollable>
       <div class="rounded-xl text-white modal-color mx-auto py-12 px-6">

@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-50 p-5">
+  <div class="mx-auto w-sm-50 w-100 p-4">
     <h3 class="fs-4">My {{ Number($route.params.id) }} Task</h3>
 
     <div>
